@@ -14,25 +14,49 @@ public class PlayerRespawn : MonoBehaviour
         uiManager = FindObjectOfType<UIManager>();
     }
 
+    // public void CheckRespawn()
+    // {
+
+    //     if(currentCheckpoint == null)
+    //     {
+
+    //         uiManager.GameOver();
+
+    //         return;
+    //     }
+    //     transform.position = currentCheckpoint.position;
+    //     playerHealth.Respawn();
+
+    //     Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckpoint.parent);
+    //     if (currentCheckpoint != null)
+    //     {
+    //         DeactivateCheckpoint();
+    //     }
+    // }
     public void CheckRespawn()
+{
+    if (currentCheckpoint == null)
     {
-
-        if(currentCheckpoint == null)
-        {
-
-            uiManager.GameOver();
-
-            return;
-        }
-        transform.position = currentCheckpoint.position;
-        playerHealth.Respawn();
-
-        Camera.main.GetComponent<CameraController>().MoveToNewRoom(currentCheckpoint.parent);
-        if (currentCheckpoint != null)
-        {
-            DeactivateCheckpoint();
-        }
+        uiManager.GameOver();
+        return;
     }
+
+    transform.position = currentCheckpoint.position;
+    playerHealth.Respawn();
+
+    Transform checkpointRoom = currentCheckpoint.parent;
+    if (checkpointRoom != null)
+    {
+        Debug.Log("Moving camera to checkpoint room: " + checkpointRoom.name);
+        Camera.main.GetComponent<CameraController>().MoveToNewRoom(checkpointRoom);
+    }
+    else
+    {
+        Debug.LogWarning("Checkpoint room is null.");
+    }
+
+    DeactivateCheckpoint();
+}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
